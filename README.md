@@ -12,19 +12,25 @@ California Department of Corrections and Rehabilitation (CDCR) website.
 This package is a work in progress, but is published on GitHub as part
 of a final project for PH290: Biostatistical Computing at UC Berkeley.
 
-The package currently includes the functions: \* `pull_pdfs`: list and
-download all PDF files on a CDCR webpage and put them in the specified
-directory. *NOTE: this currently only works for the CDCR website due to
-inconsitencies in links on their website that required cleaning*. \*
-`list_pdfs`: list all PDF files in the specified directory, and append
-the directory path to the beginning of each file name. \* `pdf_to_df`:
-convert a CDCR population report or COMPSTAT report into a useable
-dataframe. *NOTE: this currently only works on the newer TPOP4
-population reports, or COMPSTAT reports* + For population reports: only
-population breakdown by gender identity and prison location is pulled. +
-For COMSTAT reports: only total incidents and use of force incidents at
-the CDCR-wide level is pulled. *There are plans to update this to
-institute specific data in the future*
+The package currently includes the functions:
+
+- `pull_pdfs`: list and download all PDF files on a CDCR webpage and put
+  them in the specified directory. *NOTE: this currently only works for
+  the CDCR website due to inconsitencies in links on their website that
+  required cleaning*.
+
+- `list_pdfs`: list all PDF files in the specified directory, and append
+  the directory path to the beginning of each file name.
+
+- `pdf_to_df`: convert a CDCR population report or COMPSTAT report into
+  a useable dataframe. *NOTE: this currently only works on the newer
+  TPOP4 population reports, or COMPSTAT reports*
+
+  - For population reports: only population breakdown by gender identity
+    and prison location is pulled.
+  - For COMSTAT reports: only total incidents and use of force incidents
+    at the CDCR-wide level is pulled. *There are plans to update this to
+    institute specific data in the future*
 
 ## Installation
 
@@ -85,27 +91,13 @@ function on all listed pdf files and return on combined dataframe.
 ``` r
 
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 
 compstat_dat <- bind_rows(lapply(pdf_files_compstat, pdf_to_df, type = "compstat"))  %>%
   # need to remove duplicate data that is contained in multiple PDFs
   group_by(V1, month) %>%
   summarise(value = max(value))
-#> `summarise()` has grouped output by 'V1'. You can override using the `.groups`
-#> argument.
 
 pop_dat <- bind_rows(lapply(pdf_files_pop, pdf_to_df, type = "pop"))
-#> Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
-#> Using compatibility `.name_repair`.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
 Here is an example of what the final processed data looks like.

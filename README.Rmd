@@ -7,6 +7,8 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  warning = FALSE, 
+  message = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -21,8 +23,11 @@ knitr::opts_chunk$set(
 The goal of the `DataExtractCDCR` package is to enable easy downloading and processing of data that is in publicly available PDF reports on the California Department of Corrections and Rehabilitation (CDCR) website. This package is a work in progress, but is published on GitHub as part of a final project for PH290: Biostatistical Computing at UC Berkeley. 
 
 The package currently includes the functions:
+
 * `pull_pdfs`: list and download all PDF files on a CDCR webpage and put them in the specified directory. *NOTE: this currently only works for the CDCR website due to inconsitencies in links on their website that required cleaning*. 
+
 * `list_pdfs`: list all PDF files in the specified directory, and append the directory path to the beginning of each file name. 
+
 * `pdf_to_df`: convert a CDCR population report or COMPSTAT report into a useable dataframe. *NOTE: this currently only works on the newer TPOP4 population reports, or COMPSTAT reports*
   + For population reports: only population breakdown by gender identity and prison location is pulled. 
   + For COMSTAT reports: only total incidents and use of force incidents at the CDCR-wide level is pulled. *There are plans to update this to institute specific data in the future*
