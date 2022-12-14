@@ -44,22 +44,33 @@
 
 pdf_to_df <- function(pdf_file, type){
 
+# stop if type not one of allowed types
 if (!type == "compstat" & !type == "pop"){
-    stop("invalid report type, please use 'pop' or 'compstat'")
+    stop("Invalid report type, please use 'pop' or 'compstat'")
 }
 
+filecheck <- file.exists(pdf_file)
+
+# stop if the PDF file does not exist at the location
+if (filecheck == FALSE){
+  stop("The referenced PDF file does not exist at specified location. Please check file path and file name.")
+}
+
+filename <- basename(pdf_file)
 
 # COMPSTAT -----------------------------------------------------------------------------
 
 if (type == "compstat"){
 
   # extract date code from file name
-  date <- substring(pdf_file, 27, 30)
+  date <- substring(filename, 27, 30)
   year <- paste0("20", substr(date, start = 1, stop = 2))
   mon <- substr(date, start = 3, stop = 4)
   date2 <- paste0(year, "-", mon)
 
-  c13 <- as.Date(zoo::as.yearmon(date2, "%Y-%m"), frac = 1)
+  # process for calculating what the 13 different dates in the data
+  # are based on the file name (which has the abbreviated date of last column)
+  c13 <- zoo::as.Date(zoo::as.yearmon(date2, "%Y-%m"), frac = 1)
 
   # should simplify this still
   c1 <- c13 %m-% months(12) %>% ceiling_date(unit = "month") - 1
@@ -77,7 +88,7 @@ if (type == "compstat"){
 
 
   # read the pdf file
-  got_txt <- pdf_text(here::here("data", "raw", "compstat_reports", pdf_file)) %>%
+  got_txt <- pdf_text(pdf_file) %>%
     readr::read_lines()
 
   # extract text from the lines I want
@@ -117,12 +128,12 @@ if (type == "compstat"){
 } else if (type == "pop"){
 
   # extract date code from file name
-  date <- substring(pdf_file, 8, 13)
+  date <- substring(filename, 8, 13)
   # convert to date (print to test)
   date <- as.Date(as.character(date),format = "%y%m%d")
 
   # read the pdf file
-  got_txt <- pdf_text(here::here("data", "raw", "pop_reports", pdf_file)) %>%
+  got_txt <- pdf_text(pdf_file) %>%
     readr::read_lines()
 
   # Lines where data starts and ends

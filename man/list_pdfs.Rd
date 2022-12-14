@@ -6,7 +6,12 @@
 \usage{
 list_pdfs(loc)
 }
+\arguments{
+\item{loc}{character string file name for PDF location and lists all PDFs.}
+}
+\value{
+A vector of file names.
+}
 \description{
-\code{list_pdfs} a character string file name for PDF location and lists all PDFs.
-MUST currently be using specified file structure.
+\code{list_pdfs} takes a folder location and lists all PDF files in that location.
 }

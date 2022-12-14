@@ -1,8 +1,14 @@
 
 #' List PDF files.
 #'
-#' `list_pdfs` a character string file name for PDF location and lists all PDFs.
-#' MUST currently be using specified file structure.
+#' `list_pdfs` takes a folder location and lists all PDF files in that location.
+#'
+#'
+#' @param loc character string file name for PDF location and lists all PDFs.
+#'
+#'
+#' @returns
+#' A vector of file names.
 #'
 #' @export list_pdfs
 #'
@@ -37,8 +43,12 @@
 
 list_pdfs <- function(loc){
 
-list.files(here::here("data", "raw", loc),
+# list the PDF files in the destination folder
+pdfs <- list.files(loc,
            pattern = ".pdf")
+
+# append path name
+list <- paste0(loc, "/", pdfs)
 
 }
 
