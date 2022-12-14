@@ -20,6 +20,7 @@
 #' @importFrom stringr str_c
 #' @importFrom stringr str_replace_all
 #' @importFrom stringr str_squish
+#' @importFrom stringr str_split
 #' @importFrom utils download.file
 #' @importFrom zoo as.yearmon
 #' @importFrom lubridate ceiling_date
